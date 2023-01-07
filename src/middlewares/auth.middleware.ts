@@ -1,6 +1,7 @@
 import { HttpStatus, HttpException } from '@nestjs/common';
-import { Request } from 'express';
 import { AccessToken } from 'src/services/app.service';
+import { Injectable, NestMiddleware } from '@nestjs/common';
+import { Request, Response, NextFunction } from 'express';
 
 export const TokenCookie = 'ts-token';
 
@@ -14,4 +15,17 @@ export function auth(req: Request) {
   }
 
   return token;
+}
+
+export interface AuthRequest extends Request {
+  user: AccessToken;
+}
+
+@Injectable()
+export class AuthMiddleware implements NestMiddleware {
+  use(req: AuthRequest, res: Response, next: NextFunction) {
+    req.user = auth(req);
+
+    next();
+  }
 }

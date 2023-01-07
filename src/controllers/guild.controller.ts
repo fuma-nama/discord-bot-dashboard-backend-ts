@@ -1,3 +1,4 @@
+import { GuildService } from './../services/guild.service';
 import { BotService } from '@services/bot.service';
 import {
   Body,
@@ -7,20 +8,21 @@ import {
   Param,
   Patch,
   Post,
+  Req,
 } from '@nestjs/common';
 import { PrismaService } from '@services/prisma.service';
 import { WelcomeMessage } from '@prisma/client';
+import { AuthRequest } from '@middlewares/auth.middleware';
 
-type Feature = 'welcome-message';
-
-@Controller('/guilds')
+@Controller('/guilds/:guild')
 export class GuildController {
   constructor(
     private readonly bot: BotService,
     private readonly prisma: PrismaService,
+    private readonly guilds: GuildService,
   ) {}
 
-  @Get('/:guild')
+  @Get()
   async getGuild(@Param('guild') guild: string): Promise<any> {
     const data = this.bot.guilds.cache.get(guild);
     if (data == null) return 'null';
@@ -29,11 +31,11 @@ export class GuildController {
       id: data.id,
       name: data.name,
       icon: data.icon,
-      enabledFeatures: await this.getEnabledFeatures(guild),
+      enabledFeatures: await this.guilds.getEnabledFeatures(guild),
     };
   }
 
-  @Get('/:guild/features/welcome-message')
+  @Get('/features/welcome-message')
   async getFeature(@Param('guild') guild: string) {
     const data = await this.prisma.welcomeMessage.findUnique({
       where: {
@@ -48,7 +50,7 @@ export class GuildController {
     };
   }
 
-  @Post('/:guild/features/welcome-message')
+  @Post('/features/welcome-message')
   async enableFeature(@Param('guild') guild: string) {
     await this.prisma.welcomeMessage.upsert({
       create: {
@@ -63,7 +65,7 @@ export class GuildController {
     return 'Success';
   }
 
-  @Patch('/:guild/features/welcome-message')
+  @Patch('/features/welcome-message')
   async updateFeature(
     @Param('guild') guild: string,
     @Body() body: Partial<WelcomeMessage>,
@@ -81,8 +83,10 @@ export class GuildController {
     return updated;
   }
 
-  @Delete('/:guild/features/welcome-message')
-  async disableFeature(@Param('guild') guild: string) {
+  @Delete('/features/welcome-message')
+  async disableFeature(@Param('guild') guild: string, @Req() req: AuthRequest) {
+    await this.guilds.checkPermissions(req.user, guild);
+
     await this.prisma.welcomeMessage.delete({
       where: {
         id: guild,
@@ -92,7 +96,7 @@ export class GuildController {
     return 'Success';
   }
 
-  @Get('/:guild/channels')
+  @Get('/channels')
   async getChannels(@Param('guild') guild: string) {
     const channels = await this.bot.guilds.cache.get(guild)?.channels.fetch();
     if (channels == null) return null;
@@ -100,26 +104,11 @@ export class GuildController {
     return [...channels.values()];
   }
 
-  @Get('/:guild/roles')
+  @Get('/roles')
   async getRoles(@Param('guild') guild: string) {
     const roles = await this.bot.guilds.cache.get(guild)?.roles.fetch();
     if (roles == null) return null;
 
     return [...roles.values()];
-  }
-
-  async getEnabledFeatures(guild: string): Promise<Feature[]> {
-    const features: Feature[] = [];
-    const welcomeMessage = await this.prisma.welcomeMessage.count({
-      where: {
-        id: guild,
-      },
-    });
-
-    if (welcomeMessage !== 0) {
-      features.push('welcome-message');
-    }
-
-    return features;
   }
 }

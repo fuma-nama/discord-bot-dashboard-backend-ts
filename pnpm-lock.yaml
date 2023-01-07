@@ -17,6 +17,7 @@ specifiers:
   '@typescript-eslint/parser': ^5.0.0
   cookie-parser: ^1.4.6
   discord.js: ^14.7.1
+  dotenv: ^16.0.3
   eslint: ^8.0.1
   eslint-config-prettier: ^8.3.0
   eslint-plugin-prettier: ^4.0.0
@@ -40,6 +41,7 @@ dependencies:
   '@prisma/client': 4.8.1_prisma@4.8.1
   cookie-parser: 1.4.6
   discord.js: 14.7.1
+  dotenv: 16.0.3
   reflect-metadata: 0.1.13
   rxjs: 7.8.0
 
@@ -2240,6 +2242,11 @@ packages:
     dependencies:
       esutils: 2.0.3
     dev: true
+
+  /dotenv/16.0.3:
+    resolution: {integrity: sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==}
+    engines: {node: '>=12'}
+    dev: false
 
   /ee-first/1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}

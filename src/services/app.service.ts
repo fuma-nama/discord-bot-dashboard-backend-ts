@@ -1,9 +1,10 @@
+import {
+  API_ENDPOINT,
+  CLIENT_ID,
+  CLIENT_SECRET,
+  REDIRECT_URI,
+} from '@config/discord';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-
-export const API_ENDPOINT = 'https://discord.com/api/v10';
-export const CLIENT_ID = process.env.BOT_CLIENT_ID;
-export const CLIENT_SECRET = process.env.BOT_CLIENT_SECRET;
-export const REDIRECT_URI = 'http://localhost:8080/callback';
 
 export type AccessToken = {
   access_token: string;
@@ -15,8 +16,23 @@ export type AccessToken = {
 
 @Injectable()
 export class AppService {
-  getHello(): string {
-    return 'Hello World!';
+  async getUserID(accessToken: string) {
+    const res = await fetch(`${API_ENDPOINT}/users/@me`, {
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + accessToken,
+      },
+    });
+    if (!res.ok)
+      throw new HttpException(
+        'Failed to get user data',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+
+    const user = (await res.json()) as {
+      id: string;
+    };
+    return user.id;
   }
 
   async exchangeToken(code: string): Promise<AccessToken> {

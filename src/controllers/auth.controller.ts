@@ -1,4 +1,4 @@
-import { AppService, CLIENT_ID, REDIRECT_URI } from '@services/app.service';
+import { AppService } from '@services/app.service';
 import {
   Controller,
   Get,
@@ -6,30 +6,29 @@ import {
   HttpStatus,
   Post,
   Query,
-  Redirect,
   Req,
   Res,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { auth, TokenCookie } from '@middlewares/auth.middleware';
+import { CLIENT_ID, REDIRECT_URI } from '@config/discord';
 
 @Controller()
 export class AuthController {
   constructor(private readonly discord: AppService) {}
 
   @Get('/login')
-  @Redirect(
-    'https://discord.com/api/oauth2/authorize?' +
+  loginDiscord(@Res() res: Response) {
+    const url =
+      'https://discord.com/api/oauth2/authorize?' +
       new URLSearchParams({
         client_id: CLIENT_ID,
         redirect_uri: REDIRECT_URI,
         response_type: 'code',
         scope: 'identify guilds',
-      }),
-    302,
-  )
-  loginDiscord() {
-    // redirect
+      });
+
+    res.redirect(302, url);
   }
 
   @Get('/callback')

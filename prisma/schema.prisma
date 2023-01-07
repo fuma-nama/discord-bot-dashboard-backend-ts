@@ -10,6 +10,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model guild {
-  id BigInt @unique
+model WelcomeMessage {
+  id String @db.VarChar(20) @unique
+  //welcome message
+  message String @default("")
+  channel String?
+
+	@@map("welcome-message")
 }

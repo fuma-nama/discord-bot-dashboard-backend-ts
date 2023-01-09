@@ -1,7 +1,7 @@
 import { GuildService } from './services/guild.service';
 import { BotService } from '@services/bot.service';
 import { PrismaService } from '@services/prisma.service';
-import { AppService } from '@services/app.service';
+import { DiscordService } from '@services/discord.service';
 
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './controllers/app.controller';
@@ -12,7 +12,7 @@ import { AuthMiddleware } from '@middlewares/auth.middleware';
 @Module({
   imports: [],
   controllers: [AppController, AuthController, GuildController],
-  providers: [AppService, PrismaService, BotService, GuildService],
+  providers: [DiscordService, PrismaService, BotService, GuildService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

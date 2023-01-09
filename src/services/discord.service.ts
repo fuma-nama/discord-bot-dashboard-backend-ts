@@ -15,7 +15,7 @@ export type AccessToken = {
 };
 
 @Injectable()
-export class AppService {
+export class DiscordService {
   async getUserID(accessToken: string) {
     const res = await fetch(`${API_ENDPOINT}/users/@me`, {
       method: 'GET',

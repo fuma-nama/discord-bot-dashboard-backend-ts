@@ -12,7 +12,8 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '@services/prisma.service';
 import { WelcomeMessage } from '@prisma/client';
-import { AuthRequest } from '@middlewares/auth.middleware';
+import { auth, AuthRequest } from '@middlewares/auth.middleware';
+import { Request } from 'express';
 
 @Controller('/guilds/:guild')
 export class GuildController {
@@ -51,7 +52,9 @@ export class GuildController {
   }
 
   @Post('/features/welcome-message')
-  async enableFeature(@Param('guild') guild: string) {
+  async enableFeature(@Req() req: Request, @Param('guild') guild: string) {
+    this.guilds.checkPermissions(auth(req), guild);
+
     await this.prisma.welcomeMessage.upsert({
       create: {
         id: guild,
@@ -67,9 +70,12 @@ export class GuildController {
 
   @Patch('/features/welcome-message')
   async updateFeature(
+    @Req() req: Request,
     @Param('guild') guild: string,
     @Body() body: Partial<WelcomeMessage>,
   ) {
+    this.guilds.checkPermissions(auth(req), guild);
+
     const updated = await this.prisma.welcomeMessage.update({
       where: {
         id: guild,

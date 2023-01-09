@@ -1,6 +1,5 @@
-import { AppService } from '@services/app.service';
+import { DiscordService, AccessToken } from '@services/discord.service';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { AccessToken } from './app.service';
 import { BotService } from './bot.service';
 import { PrismaService } from './prisma.service';
 
@@ -11,7 +10,7 @@ export class GuildService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly bot: BotService,
-    private readonly discord: AppService,
+    private readonly discord: DiscordService,
   ) {}
 
   async getEnabledFeatures(guild: string): Promise<Feature[]> {

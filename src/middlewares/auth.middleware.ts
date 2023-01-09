@@ -1,5 +1,5 @@
 import { HttpStatus, HttpException } from '@nestjs/common';
-import { AccessToken } from 'src/services/app.service';
+import { AccessToken } from '@services/discord.service';
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 

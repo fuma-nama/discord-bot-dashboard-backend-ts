@@ -1,4 +1,4 @@
-import { AppService } from '@services/app.service';
+import { DiscordService } from '@services/discord.service';
 import {
   Controller,
   Get,
@@ -15,7 +15,7 @@ import { CLIENT_ID, REDIRECT_URI } from '@config/discord';
 
 @Controller()
 export class AuthController {
-  constructor(private readonly discord: AppService) {}
+  constructor(private readonly discord: DiscordService) {}
 
   @Get('/login')
   loginDiscord(@Res() res: Response) {

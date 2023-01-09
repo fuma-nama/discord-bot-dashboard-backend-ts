@@ -57,6 +57,7 @@ I had face some weird issues on IOS devices, I need to fix it by
 - Redirect to client side with token provided (`http://localhost:3000/callback#token=xxx`)
 - Read the token and use it in future api requests on Client side
   (Pass it via Authorization header)
+- To get the refresh token, we use jwt token instead of the access token from discord
 
 ## Notice
 

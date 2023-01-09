@@ -1,4 +1,4 @@
-import { DiscordService } from '@services/discord.service';
+import { DiscordService, AccessToken } from '@services/discord.service';
 import {
   Controller,
   Get,
@@ -39,25 +39,17 @@ export class AuthController {
 
     const token = await this.discord.exchangeToken(query.code);
 
-    res.cookie(TokenCookie, JSON.stringify(token), {
-      httpOnly: true,
-      maxAge: token.expires_in,
-    });
-
+    setCookie(res, token);
     res.redirect('http://localhost:3000/callback');
   }
 
   @Get('/auth')
   async signin(@Req() req: Request, @Res() res: Response) {
     const user = auth(req);
-    const refresh = await this.discord.refreshToken(user.refresh_token);
+    const refreshed = await this.discord.refreshToken(user.refresh_token);
 
-    res.cookie(TokenCookie, JSON.stringify(refresh), {
-      httpOnly: true,
-      maxAge: refresh.expires_in,
-    });
-
-    res.status(HttpStatus.OK).json(refresh.access_token);
+    setCookie(res, refreshed);
+    res.status(HttpStatus.OK).json(refreshed.access_token);
   }
 
   @Post('/auth/signout')
@@ -68,4 +60,11 @@ export class AuthController {
     await this.discord.revokeToken(user.access_token);
     res.sendStatus(HttpStatus.OK);
   }
+}
+
+function setCookie(res: Response, token: AccessToken) {
+  res.cookie(TokenCookie, JSON.stringify(token), {
+    httpOnly: true,
+    maxAge: token.expires_in,
+  });
 }

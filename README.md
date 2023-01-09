@@ -1,73 +1,65 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+> **Frontend Repo** <br/> > https://github.com/SonMooSans/discord-bot-dashboard-2
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+# Discord Bot Dashboard Backend Demo
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Tech Stack
 
-## Description
+- Database (Prisma)
+- Nest.js with Typescript
+- Discord.js
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Configuration
 
-## Installation
+You need some **Environment variables** in order to run it
 
-```bash
-$ pnpm install
+### Database url
+
+It is used for Prisma, I am using PostgreSQL but you may use any supported databases as well
+
+`DATABASE_URL="postgresql://postgres:password@localhost:5432/my-db?schema=public"`
+
+### Oauth2
+
+Setup an oauth2 application in Discord Developer Portal
+
+```
+BOT_CLIENT_ID="CLIENT_ID"
+BOT_CLIENT_SECRET="CLIENT_SECRET"
 ```
 
-## Running the app
+### Discord Bot Token
 
-```bash
-# development
-$ pnpm run start
+The bot token is also required
 
-# watch mode
-$ pnpm run start:dev
+`BOT_TOKEN="YOUR_TOKEN"`
 
-# production mode
-$ pnpm run start:prod
-```
+# Important
 
-## Test
+If you planned to deploy the app, You must pay attention to **CORS** <br/>
+We will save your access token in a **http-only cookie**
 
-```bash
-# unit tests
-$ pnpm run test
+Change the cookie settings [here](.\src\controllers\auth.controller.ts)
 
-# e2e tests
-$ pnpm run test:e2e
+## Same Domain
 
-# test coverage
-$ pnpm run test:cov
-```
+You have your own domain or hosted via some platforms
 
-## Support
+Example: **app.money.com** and **api.money.com** for frontend and backend <br/>
+Then you don't have to change anything, It should be worked as expected
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## Different Domain
 
-## Stay in touch
+You don't have a same domain for both frontend and backend
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Example: **money.vercel.app** and **money.railway.app** <br/>
+I had face some weird issues on IOS devices, I need to fix it by
 
-## License
+- Redirect to client side with token provided (`http://localhost:3000/callback#token=xxx`)
+- Read the token and use it in future api requests on Client side
+  (Pass it via Authorization header)
 
-Nest is [MIT licensed](LICENSE).
+## Notice
+
+If you are going to use http-only cookies, you should use the same domain for both sides
+
+Although It might be a bad idea, just use local storage or cookies if it's too annoying for you <br/>

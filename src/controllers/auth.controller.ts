@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { auth, TokenCookie } from '@middlewares/auth.middleware';
-import { CLIENT_ID, REDIRECT_URI } from '@config/discord';
+import { CLIENT_ID, REDIRECT_URI, WEB_URL } from '@config/discord';
 
 @Controller()
 export class AuthController {
@@ -40,7 +40,7 @@ export class AuthController {
     const token = await this.discord.exchangeToken(query.code);
 
     setCookie(res, token);
-    res.redirect('http://localhost:3000/callback');
+    res.redirect(`${WEB_URL}/callback`);
   }
 
   @Get('/auth')

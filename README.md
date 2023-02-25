@@ -83,3 +83,14 @@ Although It might be a bad idea, just use local storage or cookies if it's too a
 We recommend using https://railway.app to deploy your backend
 
 You are able to host both your database and node.js server on Railway
+
+## PORT
+
+The service will be running in port `8080`
+
+If you planned to deploy the app on railway, please add an enironment variable:
+| name | value |
+| --- | --- |
+| PORT | 8080 |
+
+So that the service can be detected by railway (see [here](https://docs.railway.app/deploy/railway-up) for further information)

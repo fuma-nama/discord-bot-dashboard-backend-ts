@@ -12,6 +12,7 @@ specifiers:
   '@types/express': ^4.17.13
   '@types/jest': 29.2.4
   '@types/node': 18.11.18
+  '@types/node-fetch': ^2.6.2
   '@types/supertest': ^2.0.11
   '@typescript-eslint/eslint-plugin': ^5.0.0
   '@typescript-eslint/parser': ^5.0.0
@@ -22,6 +23,7 @@ specifiers:
   eslint-config-prettier: ^8.3.0
   eslint-plugin-prettier: ^4.0.0
   jest: 29.3.1
+  node-fetch: ^2.6.2
   prettier: ^2.3.2
   prisma: ^4.8.1
   reflect-metadata: ^0.1.13
@@ -42,6 +44,7 @@ dependencies:
   cookie-parser: 1.4.6
   discord.js: 14.7.1
   dotenv: 16.0.3
+  node-fetch: 2.6.7
   reflect-metadata: 0.1.13
   rxjs: 7.8.0
 
@@ -53,6 +56,7 @@ devDependencies:
   '@types/express': 4.17.15
   '@types/jest': 29.2.4
   '@types/node': 18.11.18
+  '@types/node-fetch': 2.6.2
   '@types/supertest': 2.0.12
   '@typescript-eslint/eslint-plugin': 5.48.0_k73wpmdolxikpyqun3p36akaaq
   '@typescript-eslint/parser': 5.48.0_iukboom6ndih5an6iafl45j2fe
@@ -1238,6 +1242,13 @@ packages:
 
   /@types/mime/3.0.1:
     resolution: {integrity: sha512-Y4XFY5VJAuw0FgAqPNd6NNoV44jbq9Bz2L7Rh/J6jLTiHBSBJa9fxqQIvkIld4GsoDOcCbvzOUAbLPsSKKg+uA==}
+    dev: true
+
+  /@types/node-fetch/2.6.2:
+    resolution: {integrity: sha512-DHqhlq5jeESLy19TYhLakJ07kNumXWjcDdxXsLUMJZ6ue8VZJj4kLPQVE/2mdHh3xZziNF1xppu5lwmS53HR+A==}
+    dependencies:
+      '@types/node': 18.11.18
+      form-data: 3.0.1
     dev: true
 
   /@types/node/18.11.18:
@@ -2709,6 +2720,15 @@ packages:
       tapable: 2.2.1
       typescript: 4.9.4
       webpack: 5.75.0
+    dev: true
+
+  /form-data/3.0.1:
+    resolution: {integrity: sha512-RHkBKtLWUVwd7SqRIvCZMEvAMoGUp0XU+seQiZejj0COz3RI3hWP4sCv3gZWWLjJTd7rGwcsF5eKZGii0r/hbg==}
+    engines: {node: '>= 6'}
+    dependencies:
+      asynckit: 0.4.0
+      combined-stream: 1.0.8
+      mime-types: 2.1.35
     dev: true
 
   /form-data/4.0.0:

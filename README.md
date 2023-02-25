@@ -33,6 +33,19 @@ The bot token is also required
 
 `BOT_TOKEN="YOUR_TOKEN"`
 
+### Web URL & Static URL
+
+In order to redirect you back to sign in page, we need urls for your web frontend & backend
+
+Also, `WEB_URL` is the default origin of the CORS configuration
+
+```
+STATIC_URL="https://my-bot-api.up.railway.app"
+WEB_URL="https://my-bot.vercel.app"
+```
+
+If those variables don't exist, we will use `localhost:3000` and `localhost:8080` for frontend and backend
+
 # Important
 
 If you planned to deploy the app, You must pay attention to **CORS** <br/>
@@ -64,3 +77,20 @@ I had face some weird issues on IOS devices, I need to fix it by
 If you are going to use http-only cookies, you should use the same domain for both sides
 
 Although It might be a bad idea, just use local storage or cookies if it's too annoying for you <br/>
+
+# Deploy
+
+We recommend using https://railway.app to deploy your backend
+
+You are able to host both your database and node.js server on Railway
+
+## PORT
+
+The service will be running in port `8080`
+
+If you planned to deploy the app on railway, please add an enironment variable:
+| name | value |
+| --- | --- |
+| PORT | 8080 |
+
+So that the service can be detected by railway (see [here](https://docs.railway.app/deploy/railway-up) for further information)

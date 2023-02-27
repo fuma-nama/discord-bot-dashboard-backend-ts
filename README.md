@@ -16,6 +16,8 @@ You need some **Environment variables** in order to run it
 
 It is used for Prisma, I am using PostgreSQL but you may use any supported databases as well
 
+Read [here](https://www.prisma.io/docs/getting-started/setup-prisma/start-from-scratch/relational-databases/connect-your-database-typescript-postgres) for further details
+
 `DATABASE_URL="postgresql://postgres:password@localhost:5432/my-db?schema=public"`
 
 ### Oauth2

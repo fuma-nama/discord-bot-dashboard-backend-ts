@@ -1,4 +1,4 @@
-import { DiscordService, AccessToken } from '@services/discord.service';
+import { DiscordService, UserSession } from '@services/discord.service';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { BotService } from './bot.service';
 import { PrismaService } from './prisma.service';
@@ -28,7 +28,7 @@ export class GuildService {
     return features;
   }
 
-  async checkPermissions(user: AccessToken, guildID: string) {
+  async checkPermissions(user: UserSession, guildID: string) {
     const guild = this.bot.guilds.cache.get(guildID);
     if (guild == null)
       throw new HttpException('Guild Not found', HttpStatus.NOT_FOUND);

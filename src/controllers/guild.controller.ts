@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '@services/prisma.service';
 import { WelcomeMessage } from '@prisma/client';
-import { auth, AuthRequest } from '@middlewares/auth.middleware';
+import { AuthRequest } from '@middlewares/auth.middleware';
 import { Request } from 'express';
 
 @Controller('/guilds/:guild')
@@ -52,8 +52,8 @@ export class GuildController {
   }
 
   @Post('/features/welcome-message')
-  async enableFeature(@Req() req: Request, @Param('guild') guild: string) {
-    this.guilds.checkPermissions(auth(req), guild);
+  async enableFeature(@Req() req: AuthRequest, @Param('guild') guild: string) {
+    await this.guilds.checkPermissions(req.session, guild);
 
     await this.prisma.welcomeMessage.upsert({
       create: {
@@ -70,11 +70,11 @@ export class GuildController {
 
   @Patch('/features/welcome-message')
   async updateFeature(
-    @Req() req: Request,
+    @Req() req: AuthRequest,
     @Param('guild') guild: string,
     @Body() body: Partial<WelcomeMessage>,
   ) {
-    this.guilds.checkPermissions(auth(req), guild);
+    await this.guilds.checkPermissions(req.session, guild);
 
     const updated = await this.prisma.welcomeMessage.update({
       where: {
@@ -91,7 +91,7 @@ export class GuildController {
 
   @Delete('/features/welcome-message')
   async disableFeature(@Param('guild') guild: string, @Req() req: AuthRequest) {
-    await this.guilds.checkPermissions(req.user, guild);
+    await this.guilds.checkPermissions(req.session, guild);
 
     await this.prisma.welcomeMessage.delete({
       where: {
